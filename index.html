@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Para Amanda ❤️</title>
+<title>Para Mi niña hermosa, Amanda ❤️</title>
 
 <style>
+
 body{
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg,#ff9a9e,#fad0c4);
@@ -14,6 +15,7 @@ body{
     margin:0;
     padding:20px;
     color:white;
+    overflow-x:hidden;
 }
 
 .caja{
@@ -22,7 +24,7 @@ body{
     background:rgba(255,255,255,0.15);
     padding:25px;
     border-radius:20px;
-    backdrop-filter: blur(10px);
+    backdrop-filter:blur(10px);
 }
 
 button{
@@ -34,13 +36,16 @@ button{
     font-size:16px;
 }
 
-.correcto{
-    background:#4CAF50;
-    color:white;
+input{
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    width:200px;
 }
 
-.incorrecto{
-    background:#f44336;
+.correcto{
+    background:#4CAF50;
     color:white;
 }
 
@@ -53,6 +58,7 @@ button{
     color:red;
     font-size:25px;
     animation:subir 4s linear infinite;
+    pointer-events:none;
 }
 
 @keyframes subir{
@@ -65,6 +71,7 @@ button{
         opacity:0;
     }
 }
+
 </style>
 </head>
 
@@ -72,29 +79,33 @@ button{
 
 <div class="caja">
 
-<h1>❤️ Juego para Amanda ❤️</h1>
+<h1>❤️ Misión Especial para Amanda ❤️</h1>
 
 <div id="pregunta">
 
-<h2>¿Cuál es mi princesa favorita?</h2>
+<h2 id="textoPregunta">
+¿Cuál es mi princesa favorita?
+</h2>
 
-<button onclick="correcta()">Amanda</button>
-<button onclick="incorrecta()">Elsa</button>
-<button onclick="incorrecta()">Rapunzel</button>
+<div id="opciones">
+<button onclick="respuesta(0)">Amanda</button>
+<button onclick="respuesta(1)">Elsa</button>
+<button onclick="respuesta(2)">Rapunzel</button>
+</div>
 
 </div>
 
 <div id="final">
 
-<h1>🎉 ¡Ganaste! 🎉</h1>
+<h1>❤️ Felicidades Amor ❤️</h1>
 
 <p>
-Si llegaste aquí significa que eres la niña más especial del mundo para mí ❤️
+Que proo amol has completado todas las pruebas y desbloqueado tu premio ❤️
 </p>
 
 <a href="premio.jpg" download>
 <button class="correcto">
-Descargar Sorpresa ❤️
+🎁 Descargar Premio
 </button>
 </a>
 
@@ -104,26 +115,121 @@ Descargar Sorpresa ❤️
 
 <script>
 
-function correcta(){
-    document.getElementById("pregunta").style.display="none";
-    document.getElementById("final").style.display="block";
+const preguntas = [
+
+{
+texto:"¿Cuál es mi princesa favorita?",
+opciones:["Amanda","Elsa","Rapunzel"],
+correcta:0
+},
+
+{
+texto:"¿Quién ocupa mis pensamientos todos los días?",
+opciones:["Amanda","La escuela","El basquet"],
+correcta:0
+},
+
+{
+texto:"¿Quién es la niña más especial para mí?",
+opciones:["Amanda","Nadie","Un gato naranja"],
+correcta:0
 }
 
-function incorrecta(){
-    alert("Ups, intenta otra vez ❤️");
+];
+
+let fase = 0;
+
+function respuesta(opcion){
+
+if(opcion === preguntas[fase].correcta){
+
+fase++;
+
+if(fase < preguntas.length){
+
+document.getElementById("textoPregunta").innerHTML =
+preguntas[fase].texto;
+
+const botones =
+document.querySelectorAll("#opciones button");
+
+for(let i=0;i<3;i++){
+
+botones[i].innerHTML =
+preguntas[fase].opciones[i];
+
+botones[i].onclick = () => respuesta(i);
+
+}
+
+}else{
+
+document.getElementById("pregunta").innerHTML = `
+
+<h2>🔐 Última prueba 🔐</h2>
+
+<p>
+Introduce el código secreto para desbloquear el premio.
+</p>
+
+<input
+id="codigo"
+type="password"
+placeholder="Código secreto">
+
+<br><br>
+
+<button onclick="verificarCodigo()">
+Verificar
+</button>
+
+`;
+
+}
+
+}else{
+
+alert("Ups ❤️ intenta otra vez.");
+
+}
+
+}
+
+function verificarCodigo(){
+
+const codigo =
+document.getElementById("codigo").value;
+
+if(codigo === "1002"){
+
+document.getElementById("pregunta").style.display="none";
+document.getElementById("final").style.display="block";
+
+}else{
+
+alert("Código incorrecto ❤️");
+
+}
+
 }
 
 setInterval(()=>{
-    const corazon=document.createElement("div");
-    corazon.classList.add("corazon");
-    corazon.innerHTML="❤️";
-    corazon.style.left=Math.random()*100+"vw";
 
-    document.body.appendChild(corazon);
+const corazon =
+document.createElement("div");
 
-    setTimeout(()=>{
-        corazon.remove();
-    },4000);
+corazon.classList.add("corazon");
+
+corazon.innerHTML = "❤️";
+
+corazon.style.left =
+Math.random()*100 + "vw";
+
+document.body.appendChild(corazon);
+
+setTimeout(()=>{
+corazon.remove();
+},4000);
 
 },500);
 
